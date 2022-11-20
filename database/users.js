@@ -5,4 +5,4 @@ module.exports = [
     {name: 'Pavlo', age: 43},
     {name: 'Task', age: 32},
 
-];
+]

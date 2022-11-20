@@ -1,61 +1,26 @@
 const express = require('express');
+require('dotenv').config()
 
-const userDb = require('./database/users');
+const userRouter = require('./router/user.router');
+const configs = require('./config/config');
 
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.get('/user', (req, res) => {
-    console.log('USER ENPLOINT')
-
-    // res.json({user: "Yurii"});
-    // res.end({user: "Yurii"});
-    // res.status(402).json('its ok');
-    // res.sendFile('./');
-
-    res.json(userDb);
-});
-
-// app.post('/user', (req, res) => {
-//
-//     const userInfo = req.body;
-//
-//     userDb.push(userInfo);
-//
-//     res.status(201).json('Created')
-// });
-
-
-app.put('/user/:userId', (req, res) => {
-    const newUserInfo = req.body;
-    const userId = req.params.userId;
-    userDb[userId] = newUserInfo;
-
-
-    res.json('Updated')
-});
-
-app.get('/user/:userId', (req, res) => {
-
-    console.log(req.params);
-
-    const {userId} = req.params;
-
-
-    res.json(userDb[userId]);
-});
+app.use('/users', userRouter);
 
 app.get('/', (req, res) => {
     res.json('welcome')
 });
 
-app.listen(5000, () => {
-    console.log('server listen 5000')
+app.use((err,req,res,next)=>{
+    res.status(err.status||500).json(err.message);
+})
+
+app.listen(configs.PORT, () => {
+
+    console.log(`server listen ${configs.PORT}`);
 });
 
-app.post('/user',(req, res)=>{
-    res.json(userDb);
-})
