@@ -1,19 +1,39 @@
-const userDb = require("../database/users");
+const userDb = require("../database/users.json");
+const {fileServices} = require("../service");
 
 module.exports = {
-    getAllUsers: (req, res, next) => {
+    getAllUsers: async (req, res, next) => {
         try {
-            console.log('User Endpoint!')
+            const users = await fileServices.reader();
 
-            res.json(userDb);
-        }catch (e) {
+            res.json(users)
+        } catch (e) {
+            next(e);
+        }
+    },
+    create: async (req, res, next) => {
+        try {
+            const {name, age} = req.body;
+
+            const users = await fileServices.reader();
+
+            const newUser = {
+                id: users[users.length - 1].id + 1,
+                name,
+                age
+            };
+            users.push(newUser);
+            await fileServices.writer(users)
+
+            res.status(201).json(newUser)
+        } catch (e) {
             next(e);
         }
     },
 
-    getUserById: (req, res, next) => {
+    getUserById: async (req, res, next) => {
         try {
-            res.json(req.user);
+            res.json(user);
         } catch (e) {
             next(e);
         }
@@ -25,7 +45,7 @@ module.exports = {
             const userId = req.params.userId;
             userDb[userId] = newUserInfo;
             res.json('Updated')
-        }catch (e) {
+        } catch (e) {
             next(e);
         }
 
