@@ -1,12 +1,12 @@
-const userDb = require("../database/users");
+const User = require("../dataBase/User");
 
 module.exports = {
-    getAllUsers: (req, res, next) => {
+    getAllUsers: async (req, res, next) => {
         try {
-            console.log('User Endpoint!')
+            const users = await User.find({});
 
-            res.json(userDb);
-        }catch (e) {
+            res.json(users);
+        } catch (e) {
             next(e);
         }
     },
@@ -15,20 +15,40 @@ module.exports = {
         try {
             res.json(req.user);
         } catch (e) {
+            next(e)
+        }
+    },
+
+    updateUser: async (req, res, next) => {
+        try {
+            const newUserInfo = req.body;
+            const userId = req.params.userId;
+
+            await User.findByIdAndUpdate(userId, newUserInfo);
+
+            res.json('Updated')
+        } catch (e) {
             next(e);
         }
     },
 
-    updateUser: (req, res, next) => {
+    createUser: async (req, res, next) => {
         try {
-            const newUserInfo = req.body;
-            const userId = req.params.userId;
-            userDb[userId] = newUserInfo;
-            res.json('Updated')
-        }catch (e) {
+            await User.create(req.body);
+
+            res.json('Ok')
+        } catch (e) {
             next(e);
         }
+    },
 
+    deleteUserById: async (req, res, next) => {
+        try {
+            await User.deleteOne({ _id: req.params.userId });
+
+            res.status(204).send('Ok')
+        } catch (e) {
+            next(e);
+        }
     }
-
 }

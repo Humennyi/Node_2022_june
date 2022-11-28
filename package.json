@@ -2,7 +2,8 @@
   "dependencies": {
     "chalk": "^5.1.2",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^6.7.4"
   },
   "name": "june-2022",
   "version": "1.0.0",
