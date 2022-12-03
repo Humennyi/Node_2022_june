@@ -1,5 +1,4 @@
-
-const {userService} = require("../services");
+const { userService } = require('../services');
 
 module.exports = {
     getAllUsers: async (req, res, next) => {
@@ -14,8 +13,9 @@ module.exports = {
 
     getUserById: async (req, res, next) => {
         try {
-            const user =await userService.findOneByParams();
-            res.json(user)
+            const user = await userService.findByIdWithCars(req.user._id);
+
+            res.json(user);
         } catch (e) {
             next(e)
         }
@@ -26,9 +26,9 @@ module.exports = {
             const newUserInfo = req.body;
             const userId = req.params.userId;
 
-            const user=await userService.updateOne(userId,newUserInfo);
+            const user = await userService.updateOne(userId, newUserInfo);
 
-            res.status(201).json(user)
+            res.status(201).json(user);
         } catch (e) {
             next(e);
         }
@@ -36,7 +36,7 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const user=await userService.create(req.body);
+            const user = await userService.create(req.body);
 
             res.status(201).json(user);
         } catch (e) {
@@ -53,4 +53,4 @@ module.exports = {
             next(e);
         }
     }
-}
+};
