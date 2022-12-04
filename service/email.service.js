@@ -5,8 +5,7 @@ const { NO_REPLY_EMAIL, NO_REPLY_EMAIL_PASSWORD } = require('../config/config');
 const emailTemplates = require('../email-templates');
 const ApiError = require("../error/ApiError");
 
-const sendEmail = async (receiverMail, emailAction, locals = {}) => { // WELCOME: "welcome",
-    console.log(emailAction, '- EMAIL SERVICE')
+const sendEmail = async (receiverMail, emailAction, locals = {}) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
