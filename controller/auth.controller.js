@@ -1,10 +1,14 @@
 const oauthService = require("../service/oauth.service");
+const emailService = require("../service/emal.service");
+
 const OAuth = require("../dataBase/OAuth");
 
 module.exports = {
     login: async (req, res, next) => {
         try {
             const { user, body } = req;
+
+            await emailService.sendEmail('yhercko5511@gmail.com')
 
             await oauthService.comparePasswords(user.password, body.password);
 
@@ -16,6 +20,22 @@ module.exports = {
                 user,
                 ...tokenPair
             });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    refresh: async (req, res, next) => {
+        try {
+            const { refreshToken, _user_id } = req.tokenInfo;
+
+            await OAuth.deleteOne({ refreshToken });
+
+            const tokenPair = oauthService.generateAccessTokenPair({ id: _user_id });
+
+            await OAuth.create({ ...tokenPair, _user_id })
+
+            res.status(201).json(tokenPair);
         } catch (e) {
             next(e);
         }
