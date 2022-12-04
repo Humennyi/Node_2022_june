@@ -20,6 +20,7 @@ module.exports = {
         }
     },
 
+
     checkAccessToken: async (req, res, next) => {
         try {
             const accessToken = req.get('Authorization');
