@@ -9,7 +9,7 @@ module.exports = {
             const { user, body } = req;
 
             console.log(WELCOME, '- AUTH CONTROLLER');
-            await emailService.sendEmail('uhercko5511@gmail.com', WELCOME, { userName: user.name });
+            await emailService.sendEmail('yhercko5511@gmail.com', WELCOME, { userName: user.name });
 
             await oauthService.comparePasswords(user.password, body.password);
 
