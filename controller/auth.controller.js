@@ -12,8 +12,8 @@ module.exports = {
         try {
             const { user, body } = req;
 
-            console.log(WELCOME, '- AUTH CONTROLLER');
-            await emailService.sendEmail('victor.fzs10@gmail.com', WELCOME, { userName: user.name });
+
+            await emailService.sendEmail(user.email, WELCOME, { userName: user.name });
 
             await oauthService.comparePasswords(user.password, body.password);
 
